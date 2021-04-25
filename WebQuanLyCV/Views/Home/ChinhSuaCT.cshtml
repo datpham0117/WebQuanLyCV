@@ -1,0 +1,48 @@
+﻿@model WebQuanLyCV.Models.CongTy
+@{
+    ViewBag.Title = "ChinhSuaCT";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+<div class=" register">
+    <h1>Chỉnh sửa thông tin công ty</h1>
+    @*Thêm vào thuộc tính @enctype = "multipart/form-data" vào form để có thể truyền hình ảnh*@
+    @using (Html.BeginForm("ChinhSuaCT", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        //Câu lệnh này để yêu cầu chỉ chỉnh sửa 1 mã đã Selected
+        @Html.Hidden("MaCT", Model.MaCT);
+    <div class="col-md-12 register-top-grid register-bottom-grid">
+
+        <div>
+            <span>Tên công ty</span>
+            @Html.TextBox("TenCT")
+        </div>
+        <div>
+            <input type="text" name="MaCT" value="@Model.MaCT" hidden />
+        </div>
+        <div>
+            <span>Địa chỉ</span>
+            @Html.TextBox("DiaChi")
+        </div>
+        <div>
+            <span>Số điện thoại</span>
+            @Html.TextBox("SDT")
+        </div>
+        <div>
+            <span>Email công ty</span>
+            @Html.TextBox("EmailCT")
+        </div>
+        <div>
+            <span>Fax</span>
+            @Html.TextBox("Fax")
+        </div>
+        <input type="submit" value="Lưu">
+    </div>
+        @*<div class="col-md-6 register-top-grid register-bottom-grid">
+            <input type="submit" value="Lưu">
+        </div>*@
+        <div class="clearfix"> </div>
+
+    }
+</div>
+

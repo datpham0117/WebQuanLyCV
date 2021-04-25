@@ -1,0 +1,192 @@
+﻿@using WebQuanLyCV.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<ChucVu>
+@{
+    ViewBag.Title = "LoadJobsList";
+    Layout = "~/Views/Layouts/ProductLayout.cshtml";
+}
+
+@section head
+{
+    @*Hiển thị những mục chỉ riêng NUT hoặc riêng NTD nhìn thấy khi đăng nhập*@
+    <div class="container">
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/LogoWeb.jpg" height="50" width="50" alt=""></a>
+        </div>
+        <div class="header-left">
+            @if (Session["TaiKhoan"] != null)
+            {
+                ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+                <ul>
+                    <li><a class="lock" href="login.html">Xin chào, @Tttkh.HoTen</a></li>
+                    <li>@Html.ActionLink("Đăng xuất", "Logout", "Home", new { @class = "lock" })</li>
+                    <li>
+                    </li>
+
+                </ul>
+            }
+
+            <div class="clearfix"> </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+}
+
+@section menu
+{
+    <div class=" h_menu4">
+        @if (Session["TaiKhoan"] != null)
+        {
+            ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+            <ul class="memenu skyblue">
+                @if (Tttkh.MaLoaiTK == 2)
+                {
+                    <li><a class="color1" href="@Url.Action("ChinhSuaCT", "Home", new {@MaCT = Tttkh.MaCT})">Chỉnh sửa thông tin công ty</a></li>
+                    <li><a class="color1" href="@Url.Action("MakeJob", "Home", new {@MaCT = Tttkh.MaCT})">Tạo thông tin tuyển dụng</a></li>
+                }
+                <li class="grid"><a class="color2" href="@Url.Action("ProductCV", "Home")">Xem danh sách CV</a></li>
+                <li><a class="color4" href="@Url.Action("ChinhSuaTK", "Home", new {@MaTTTK = Tttkh.MaTTTK})">Chỉnh sửa tài khoản</a></li>
+            </ul>
+        }
+    </div>
+}
+
+@section leftmenu
+{
+    @if (Session["TaiKhoan"] != null)
+    {
+        ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+        foreach (var item in ViewBag.listCT)
+        {
+            <ul class="menu">
+                <li class="item1">
+                    <a href="#">@item.TenCT </a>
+                    <ul class="cute">
+                        @foreach (var item1 in Model)
+                        {
+                            if (item.MaCT == item1.MaCT)
+                            {
+                                if (Tttkh.MaLoaiTK == 1)
+                                {
+                                    <li class="subitem1"><a href="@Url.Action("ViewJob", "Home", new { @MaTTTK = Tttkh.MaTTTK, @MaLoaiTK = Tttkh.MaLoaiTK, @MaChV = item1.MaChV, @MaCT = item.MaCT })">@item1.ChucVuTuyenDung </a></li>
+                                }
+                                else
+                                {
+                                    <li class="subitem1"><a href="#">@item1.ChucVuTuyenDung </a></li>
+                                }
+
+                            }
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
+    }
+
+}
+
+@section botton
+{
+    @if (Session["TaiKhoan"] != null)
+    {
+        ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+        @*Hiển thị các CV của người ứng tuyển đã đăng nhập*@
+        if (Tttkh.MaLoaiTK == 1)
+        {
+            <h3 class="cate">Thông tin đăng tuyển của các công ty</h3>
+            <br />
+            foreach (var item in Model)
+            {
+                foreach (var item1 in ViewBag.listCT)
+                {
+                    if (item1.MaCT == item.MaCT)
+                    {
+                        <div class="col-md-12 bottom-cd simpleCart_shelfItem">
+                            <div class="product-at ">
+                                <a href="@Url.Action("ViewJob", "Home", new {@MaTTTK = Tttkh.MaTTTK, @MaLoaiTK = Tttkh.MaLoaiTK, @MaChV = item.MaChV, @MaCT = item1.MaCT})">
+                                    <div class="content">
+                                        <div class="text">
+                                            <h3>Tuyển dụng @item.ChucVuTuyenDung</h3>
+                                            <br />
+                                            <h4>Mức lương lên đến @item.MucLuong đ</h4>
+                                            <span>Tại @item1.TenCT </span>
+                                            <br />
+                                            <span>Số Điện Thoại Liên Hệ: @item1.SDT</span>
+                                        </div>
+                                    </div>
+                                    <div class="pro-grid">
+                                        <span class="buy-in">Xem Chi Tiết</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        }
+        @*Hiển thị các CV ứng tuyển vào công ty của nhà tuyển dụng đã đăng nhập*@
+        if (Tttkh.MaLoaiTK == 2)
+        {
+            <h3 class="cate">Thông tin đăng tuyển của công ty bạn</h3>
+            <br />
+            foreach (var item in Model)
+            {
+                if (item.MaCT == Tttkh.MaCT)
+                {
+                    foreach (var item1 in ViewBag.listCT)
+                    {
+                        if (item1.MaCT == item.MaCT)
+                        {
+                            <div class="col-md-12 bottom-cd simpleCart_shelfItem">
+                                <div class="product-at ">
+                                    <a href="@Url.Action("ChinhSuaChV", "Home", new {@MaChV = item.MaChV})">
+                                        <div class="content">
+                                            <div class="text">
+                                                <h3>Tuyển dụng @item.ChucVuTuyenDung</h3>
+                                                <br />
+                                                <h4>Mức lương lên đến @item.MucLuong đ</h4>
+                                                <span>Tại @item1.TenCT </span>
+                                                <br />
+                                                <span>Số Điện Thoại Liên Hệ: @item1.SDT</span>
+                                            </div>
+                                        </div>
+                                        <div class="pro-grid">
+                                            <span class="buy-in">Chỉnh sửa thông tin</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@section page
+{
+    <div class="dlink">
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("LoadJobsList", new { page = page }))
+    </div>
+}
+<style>
+    .content {
+        width: 700px; /* kích thước chiều rộng của vùng nội dung */
+        height: 150px;
+        float: left; /* canh div từ trái sang */
+        background-color: lightblue; /* tạo màu để dễ nhìn */
+        border: double;
+        margin-left: 10px;
+        margin-top: 10px;
+        position: relative;
+    }
+
+    .text {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+    }
+</style>
+

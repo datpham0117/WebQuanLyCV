@@ -1,0 +1,108 @@
+﻿@model WebQuanLyCV.Models.ThongtinTaiKhoan
+@{
+    ViewBag.Title = "ChinhSuaTK";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+@*Link để sử dụng tinymce*@
+@*<script src="https://cdn.tiny.cloud/1/b3vinwosej39qsyxsn2ackkl9kp11km0oualxji2kf6frld2/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/Content/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Content/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+            toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+            toolbar_mode: 'floating',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+        });
+    </script>*@
+@*Link để sử dụng timepicker*@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#datepicker").datepicker();
+    });
+</script>
+
+<div class=" register">
+    <h1>Thông tin cá nhân</h1>
+    @*Thêm vào thuộc tính @enctype = "multipart/form-data" vào form để có thể truyền hình ảnh*@
+    @using (Html.BeginForm("ChinhSuaTK", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        //Câu lệnh này để yêu cầu chỉ chỉnh sửa 1 mã đã Selected
+        @Html.Hidden("MaTTTK", Model.MaTTTK);
+    <div class="col-md-6 register-top-grid">
+
+        <div>
+            <span>Họ tên</span>
+            @Html.TextBox("HoTen")
+        </div>
+        <div>
+            <span>Email Address</span>
+            @Html.TextBox("Email")
+        </div>
+        <div>
+            <span>Số điện thoại cá nhân</span>
+            @Html.TextBox("SDTCN")
+        </div>
+        <div>
+            <span>Ngày sinh</span>
+            <input name="NgaySinh" value="@Model.NgaySinh.Value.ToString("dd/MM/yyyy")" type="text" id="datepicker" />
+        </div>
+        <div>
+            <span>Trình độ học vấn</span>
+            @Html.TextBox("TrinhDoHocVan")
+        </div>
+        <div>
+            @*Tạo thẻ input có type="file" để chuyền file lưu giá trị hình ảnh*@
+            <span>Hình ảnh đại diện</span>
+            <input name="AnhDD" type="file" src="@Url.Content("~/Content/images/"+Model.AnhDD)" />
+            <img src="@Url.Content("~/Content/images/"+Model.AnhDD)" height="100" width="50" />
+            <span style="color:red;">@ViewBag.Upload</span>
+        </div>
+    </div>
+    <div class="col-md-6 register-top-grid register-bottom-grid">
+        <div>
+            @*Tên của DropDownList phải giống với tên ViewBag để truyền đúng giữ liệu*@
+            <span>Người sử dụng</span>
+            @Html.DropDownList("MaLoaiTK", null, new { @class = "form-control" })
+        </div>
+        <div>
+            <input type="text" name="MaCT" value="@Model.MaCT" hidden />
+        </div>
+        <br />
+        <div>
+            <span>Giới thiệu bản thân</span>
+            <textarea name="GioiThieuBanThan" style="width: 100%">@Model.GioiThieuBanThan</textarea>
+        </div>
+        <div>
+            <span>Câu trả lời</span>
+            @Html.DropDownList("CauHoi")
+            @Html.TextBox("CauHoiAN")
+        </div>
+        <div>
+            <span>Mật khẩu</span>
+            <input type="password" value="@Model.MatKhau" />
+        </div>
+        <input type="submit" value="Lưu">
+        <a class="color4 form1" href="@Url.Action("XoaTK", "Home", new {@MaTTTK = Model.MaTTTK})">Xóa tài khoản</a>
+    </div>
+        <div class="clearfix"> </div>
+
+    }
+</div>
+
+<style>
+    .form1{
+        margin-left:10px;
+        margin-top:10px;
+        background-color:orangered;
+    }
+</style>
+
+

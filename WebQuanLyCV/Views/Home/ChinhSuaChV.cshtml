@@ -1,0 +1,57 @@
+﻿@model WebQuanLyCV.Models.ChucVu
+@{
+    ViewBag.Title = "ChinhSuaChV";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+<div class=" register">
+    <h1>Chỉnh sửa thông tin đăng tuyển</h1>
+    @*Thêm vào thuộc tính @enctype = "multipart/form-data" vào form để có thể truyền hình ảnh*@
+    @using (Html.BeginForm("ChinhSuaChV", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        //Câu lệnh này để yêu cầu chỉ chỉnh sửa 1 mã đã Selected
+        @Html.Hidden("MaChV", Model.MaChV);
+    <div class="col-md-6 register-top-grid">
+
+        <div>
+            <span>Chức vụ tuyển dụng</span>
+            @Html.TextBox("ChucVuTuyenDung")
+        </div>
+        <div>
+            <span>MaCT</span>
+            <input type="text" name="MaCT" value="@Model.MaCT" hidden/>
+        </div>
+        <div>
+            <span>Mức lương</span>
+            @Html.TextBox("MucLuong")
+        </div>
+        <div>
+            <span>Mô tả công việc</span>
+            <textarea name="MoTaCongViec" style="width: 100%">@Model.MoTaCongViec</textarea>
+        </div>
+    </div>
+    <div class="col-md-6 register-top-grid register-bottom-grid">
+        <div>
+            <span>Yêu cầu</span>
+            <textarea name="YeuCau" style="width: 100%">@Model.YeuCau</textarea>
+        </div>
+        <div>
+            <span>Phúc lợi</span>
+            <textarea name="PhucLoi" style="width: 100%">@Model.PhucLoi</textarea>
+        </div>
+        <input type="submit" value="Lưu">
+        <a class="color4 form1" href="@Url.Action("XoaChV", "Home", new {@MaChV = Model.MaChV})">Xóa thông tin đăng tuyển</a>
+    </div>
+        <div class="clearfix"> </div>
+
+    }
+</div>
+
+<style>
+    .form1 {
+        margin-left: 10px;
+        margin-top: 10px;
+        background-color: orangered;
+    }
+</style>
+

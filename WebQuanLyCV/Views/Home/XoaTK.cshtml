@@ -1,0 +1,116 @@
+﻿@model WebQuanLyCV.Models.ThongtinTaiKhoan
+
+@{
+    ViewBag.Title = "XoaTK";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+@using (Html.BeginForm("XoaTK", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <h3>Are you sure you want to delete this?</h3>
+    @Html.Hidden("MaTTTK", Model.MaTTTK);
+    <div>
+        <h4>ThongtinTaiKhoan</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.MaTTTK)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MaTTTK)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.HoTen)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.HoTen)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NgaySinh)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NgaySinh)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TrinhDoHocVan)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TrinhDoHocVan)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GioiThieuBanThan)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GioiThieuBanThan)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MaLoaiTK)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MaLoaiTK)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MaCT)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MaCT)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MatKhau)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MatKhau)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CauHoiAN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CauHoiAN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AnhDD)
+            </dt>
+
+            <dd>
+                <img src="@Url.Content("~/Content/images/"+Model.AnhDD)" height="100" width="50" />
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+}

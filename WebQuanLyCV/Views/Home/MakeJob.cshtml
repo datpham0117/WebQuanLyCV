@@ -1,0 +1,78 @@
+﻿@using WebQuanLyCV.Models;
+@model ChucVu
+@{
+    ViewBag.Title = "MakeJob";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+<div class=" register">
+    <h1>Thông tin các nhân</h1>
+    @*Thêm vào thuộc tính @enctype = "multipart/form-data" vào form để có thể truyền hình ảnh*@
+    @using (Html.BeginForm("MakeJob", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+    <div class="col-md-6 register-top-grid">
+
+        <div>
+            <span>Chức vụ tuyển dụng</span>
+            @Html.TextBox("ChucVuTuyenDung")
+        </div>
+        <div>
+            <span>Mức lương/tháng</span>
+            @Html.TextBox("MucLuong")
+        </div>
+        <div>
+            <span>Mô tả công việc</span>
+            <textarea name="MoTaCongViec" style="width: 100%"></textarea>
+        </div>
+        <div>
+            <span>Yêu cầu</span>
+            <textarea name="YeuCau" style="width: 100%"></textarea>
+        </div>
+        <div>
+            <span>Phúc lợi được hưởng</span>
+            <textarea name="PhucLoi" style="width: 100%"></textarea>
+        </div>
+        
+    </div>
+    <div class="col-md-6 register-top-grid register-bottom-grid">
+        @foreach (var item in ViewBag.listTTTK)
+        {
+            foreach (var item1 in ViewBag.listCT)
+            {
+                if (item1.MaCT == item.MaCT)
+                {
+                    <div>
+                        <input type="text" name="MaCT" value="@item.MaCT" hidden />
+                    </div>
+                    <div>
+                        <span>Tên công ty</span>
+                        <input type="text" value="@item1.TenCT" />
+                    </div>
+                    <div>
+                        <span>Địa chỉ</span>
+                        <input type="text" value="@item1.DiaChi" />
+                    </div>
+                    <div>
+                        <span>Số điện thoại</span>
+                        <input type="text" value="@item1.SDT" />
+                    </div>
+                    <div>
+                        <span>Email</span>
+                        <input type="text" value="@item1.EmailCT" />
+                    </div>
+                    <div>
+                        <span>Fax</span>
+                        <input type="text" value="@item1.Fax" />
+                    </div>
+                }
+            }
+        }
+        <input type="submit" value="Đăng tuyển">
+        @*Vị trí hiển thị từ captcha*@
+
+    </div>
+        <div class="clearfix"> </div>
+
+    }
+</div>
+

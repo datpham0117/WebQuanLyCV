@@ -1,0 +1,85 @@
+﻿@model WebQuanLyCV.Models.ChucVu
+
+@{
+    ViewBag.Title = "XoaChV";
+    Layout = "~/Views/Layouts/Register.cshtml";
+}
+
+
+
+<h2>XoaChV</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+@Html.Hidden("MaChV", Model.MaChV);
+<div>
+    <h4>ChucVu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MaChV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaChV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChucVuTuyenDung)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChucVuTuyenDung)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaCT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaCT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MucLuong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MucLuong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoTaCongViec)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoTaCongViec)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.YeuCau)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YeuCau)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhucLoi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhucLoi)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

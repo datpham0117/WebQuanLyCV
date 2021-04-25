@@ -1,0 +1,187 @@
+﻿@using WebQuanLyCV.Models;
+@model CV
+@{
+    ViewBag.Title = "ViewJob";
+    Layout = "~/Views/Layouts/ShowCVLayout.cshtml";
+}
+
+@section head
+{
+    @*Hiển thị những mục chỉ riêng NUT hoặc riêng NTD nhìn thấy khi đăng nhập*@
+    <div class="container">
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/LogoWeb.jpg" height="50" width="50" alt=""></a>
+        </div>
+        <div class="header-left">
+            @if (Session["TaiKhoan"] != null)
+            {
+                ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+                <ul>
+                    <li><a class="lock" href="#">Xin chào, @Tttkh.HoTen</a></li>
+                    <li>@Html.ActionLink("Đăng xuất", "Logout", "Home", new { @class = "lock" })</li>
+                    <li>
+                    </li>
+
+                </ul>
+            }
+
+            <div class="clearfix"> </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+}
+
+@section menu
+{
+    <div class=" h_menu4">
+        @if (Session["TaiKhoan"] != null)
+        {
+            ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+            <ul class="memenu skyblue">
+                @if (Tttkh.MaLoaiTK == 2)
+                {
+                    <li><a class="color1" href="@Url.Action("ChinhSuaCT", "Home", new {@MaCT = Tttkh.MaCT})">Chỉnh sửa thông tin công ty</a></li>
+                    <li><a class="color1" href="@Url.Action("MakeJob", "Home", new {@MaCT = Tttkh.MaCT})">Tạo thông tin tuyển dụng</a></li>
+                }
+                <li class="grid"><a class="color2" href="@Url.Action("ProductCV", "Home")">Xem danh sách CV</a></li>
+                <li><a class="color4" href="@Url.Action("ChinhSuaTK", "Home", new {@MaTTTK = Tttkh.MaTTTK})">Chỉnh sửa tài khoản</a></li>
+            </ul>
+        }
+    </div>
+}
+
+@section botton
+{
+    @using (Html.BeginForm("ViewJob", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        foreach (var item in ViewBag.listTTTK)
+        {
+            <div class="col-md-5 single-top">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li data-thumb="@Url.Content("~/Content/images/" + item.AnhDD)">
+                            <img src="@Url.Content("~/Content/images/" + item.AnhDD)" />
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/" + item.AnhDD)">
+                            <img src="@Url.Content("~/Content/images/" + item.AnhDD)" />
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/" + item.AnhDD)">
+                            <img src="@Url.Content("~/Content/images/" + item.AnhDD)" />
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/" + item.AnhDD)">
+                            <img src="@Url.Content("~/Content/images/" + item.AnhDD)" />
+                        </li>
+                    </ul>
+                </div>
+                <!-- FlexSlider -->
+                <script defer src="~/Content/js/jquery.flexslider.js"></script>
+                <link rel="stylesheet" href="~/Content/css/flexslider.css" type="text/css" media="screen" />
+
+                <script>
+                    // Can also be used with $(document).ready()
+                    $(window).load(function () {
+                        $('.flexslider').flexslider({
+                            animation: "slide",
+                            controlNav: "thumbnails"
+                        });
+                    });
+                </script>
+            </div>
+
+            <div class="col-md-7 single-top-in simpleCart_shelfItem">
+                <div class="single-para ">
+                    <div>
+                        <span>Tiêu đề CV</span>
+                        @Html.TextBox("TieuDeCV")
+                    </div>
+                    <br />
+                    <ul class="tag-men">
+                        <li>
+                            <span>Họ và tên</span>
+                            <span>: @item.HoTen</span>
+                        </li>
+                        <li>
+                            <span>Địa chỉ Email</span>
+                            <span>: @item.Email</span>
+                        </li>
+                        <li>
+                            <span>Ngày sinh</span>
+                            <span>: @item.NgaySinh.ToString("dd/MM/yyyy")</span>
+                        </li>
+                        <li>
+                            <span>Trình độ học vấn</span>
+                            <span>: @item.TrinhDoHocVan</span>
+                        </li>
+                        <li>
+                            <span>Giới thiệu bản thân: </span>
+                            <br />
+                            <span>@item.GioiThieuBanThan</span>
+                        </li>
+                        <li>
+                            <span>Khả năng trong công việc </span>
+                            <br />
+                            <textarea name="KhaNang" style="width: 100%"></textarea>
+                        </li>
+                    </ul>
+                    @foreach (var itemGrourp2 in ViewBag.listChV)
+                    {
+                        <h5>Đăng ký ứng tuyển vào công ty</h5>
+                        foreach (var itemGrourp3 in ViewBag.listCT)
+                        {
+                            <ul class="tag-men">
+                                <li>
+                                    <span>Ứng tuyển vào vị trí</span>
+                                    <span>: @itemGrourp2.ChucVuTuyenDung </span>
+                                </li>
+                                <li>
+                                    <span>Mức lương</span>
+                                    <span>: @itemGrourp2.MucLuong </span>
+                                </li>
+                                <li>
+                                    <span>Mô tả công việc</span>
+                                    <span>: @itemGrourp2.MoTaCongViec </span>
+                                </li>
+                                <li>
+                                    <span>Yêu Cầu</span>
+                                    <span>: @itemGrourp2.YeuCau </span>
+                                </li>
+                                <li>
+                                    <span>Phúc Lợi</span>
+                                    <span>: @itemGrourp2.PhucLoi </span>
+                                </li>
+                                <li>
+                                    <span>Tên công ty</span>
+                                    <span>: @itemGrourp3.TenCT </span>
+                                </li>
+                                <li>
+                                    <span>Địa chỉ</span>
+                                    <span>: @itemGrourp3.DiaChi </span>
+                                </li>
+                                <li>
+                                    <span>Số điện thoại</span>
+                                    <span>: @itemGrourp3.SDT </span>
+                                </li>
+                            </ul>
+                            <div>
+                                <input type="text" name="MaTTTK" value="@item.MaTTTK" hidden />
+                                <input type="text" name="MaChV" value="@itemGrourp2.MaChV" hidden />
+                                <input type="text" name="MaCT" value="@itemGrourp3.MaCT" hidden />
+                                <input type="text" name="DaXem" value="False" hidden />
+                            </div>
+                            <input class="add-cart item_add color" type="submit" value="Ứng Tuyển" />
+                        }
+                    }
+                    <p>@ViewBag.Upload</p>
+                </div>
+            </div>
+        }
+    }
+}
+<style>
+    .color {
+        margin-left: 20px;
+        margin-top: 20px;
+        background-color: orangered;
+    }
+</style>
+

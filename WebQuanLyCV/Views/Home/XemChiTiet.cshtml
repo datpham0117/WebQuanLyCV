@@ -1,0 +1,205 @@
+﻿@using WebQuanLyCV.Models
+@model IEnumerable<CV>
+@{
+    ViewBag.Title = "XemChiTiet";
+    Layout = "~/Views/Layouts/ShowCVLayout.cshtml";
+}
+
+@section head
+{
+    @*Hiển thị những mục chỉ riêng NUT hoặc riêng NTD nhìn thấy khi đăng nhập*@
+    <div class="container">
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/LogoWeb.jpg" height="50" width="50" alt=""></a>
+        </div>
+        <div class="header-left">
+            @if (Session["TaiKhoan"] != null)
+            {
+                ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+                <ul>
+                    <li><a class="lock" href="#">Xin chào, @Tttkh.HoTen</a></li>
+                    <li>@Html.ActionLink("Đăng xuất", "Logout", "Home", new { @class = "lock" })</li>
+                    <li>
+                    </li>
+
+                </ul>
+            }
+
+            <div class="clearfix"> </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+}
+
+@section menu
+{
+    <div class=" h_menu4">
+        @if (Session["TaiKhoan"] != null)
+        {
+            ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+            <ul class="memenu skyblue">
+                @if (Tttkh.MaLoaiTK == 2)
+                {
+                    <li><a class="color1" href="@Url.Action("ChinhSuaCT", "Home", new {@MaCT = Tttkh.MaCT})">Chỉnh sửa thông tin công ty</a></li>
+                    <li><a class="color1" href="@Url.Action("MakeJob", "Home", new {@MaCT = Tttkh.MaCT})">Tạo thông tin tuyển dụng</a></li>
+                }
+                <li class="grid"><a class="color2" href="@Url.Action("ProductCV", "Home")">Xem danh sách CV</a></li>
+                <li><a class="color4" href="@Url.Action("ChinhSuaTK", "Home", new {@MaTTTK = Tttkh.MaTTTK})">Chỉnh sửa tài khoản</a></li>
+            </ul>
+        }
+    </div>
+}
+
+@section botton
+{
+    @using (Html.BeginForm("XemChiTiet", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        foreach (var item in Model)
+        {
+            @Html.Hidden("MaCV", item.MaCV);
+            foreach (var itemGrourp in Model.GroupBy(n => n.ThongtinTaiKhoan))
+            {
+                <div class="col-md-5 single-top">
+                    <div class="flexslider">
+                        <ul class="slides">
+                            <li data-thumb="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)">
+                                <img src="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)" />
+                            </li>
+                            <li data-thumb="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)">
+                                <img src="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)" />
+                            </li>
+                            <li data-thumb="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)">
+                                <img src="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)" />
+                            </li>
+                            <li data-thumb="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)">
+                                <img src="@Url.Content("~/Content/images/" + itemGrourp.Key.AnhDD)" />
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- FlexSlider -->
+                    <script defer src="~/Content/js/jquery.flexslider.js"></script>
+                    <link rel="stylesheet" href="~/Content/css/flexslider.css" type="text/css" media="screen" />
+
+                    <script>
+                        // Can also be used with $(document).ready()
+                        $(window).load(function () {
+                            $('.flexslider').flexslider({
+                                animation: "slide",
+                                controlNav: "thumbnails"
+                            });
+                        });
+                    </script>
+                </div>
+
+                <div class="col-md-7 single-top-in simpleCart_shelfItem">
+                    <div class="single-para ">
+                        <h4>@item.TieuDeCV</h4>
+                        <br />
+                        <ul class="tag-men">
+                            <li>
+                                <span>Họ và tên</span>
+                                <span>: @itemGrourp.Key.HoTen</span>
+                            </li>
+                            <li>
+                                <span>Địa chỉ Email</span>
+                                <span>: @itemGrourp.Key.Email</span>
+                            </li>
+                            <li>
+                                <span>Ngày sinh</span>
+                                <span>: @itemGrourp.Key.NgaySinh.Value.ToString("dd/MM/yyyy")</span>
+                            </li>
+                            <li>
+                                <span>Trình độ học vấn</span>
+                                <span>: @itemGrourp.Key.TrinhDoHocVan</span>
+                            </li>
+                            <li>
+                                <span>Giới thiệu bản thân: </span>
+                                <br />
+                                <span>@itemGrourp.Key.GioiThieuBanThan</span>
+                            </li>
+                        </ul>
+                        @foreach (var itemGrourp2 in itemGrourp.GroupBy(n => n.CongTy))
+                        {
+                            <h5>Đăng ký ứng tuyển vào công ty</h5>
+                            <ul class="tag-men">
+                                <li>
+                                    <span>Tên công ty</span>
+                                    <span>: @itemGrourp2.Key.TenCT</span>
+                                </li>
+                                <li>
+                                    <span>Địa chỉ</span>
+                                    <span>: @itemGrourp2.Key.DiaChi</span>
+                                </li>
+                                <li>
+                                    <span>Số điện thoại</span>
+                                    <span>: @itemGrourp2.Key.SDT</span>
+                                </li>
+                                @foreach (var itemGrourp3 in itemGrourp2.GroupBy(n => n.ChucVu))
+                                {
+                                    <li>
+                                        <span>Ứng tuyển vào vị trí</span>
+                                        <span>: @itemGrourp3.Key.ChucVuTuyenDung</span>
+                                    </li>
+                                    <li>
+                                        <span>Mức lương</span>
+                                        <span>: @itemGrourp3.Key.MucLuong </span>
+                                    </li>
+                                    <li>
+                                        <span>Mô tả công việc</span>
+                                        <span>: @itemGrourp3.Key.MoTaCongViec </span>
+                                    </li>
+                                    <li>
+                                        <span>Yêu Cầu</span>
+                                        <span>: @itemGrourp3.Key.YeuCau </span>
+                                    </li>
+                                    <li>
+                                        <span>Phúc Lợi</span>
+                                        <span>: @itemGrourp3.Key.PhucLoi </span>
+                                    </li>
+                                    <div>
+                                        <input type="text" name="MaCV" value="@item.MaCV" hidden />
+                                        <input type="text" name="MaTTTK" value="@itemGrourp.Key.MaTTTK" hidden />
+                                        <input type="text" name="MaChV" value="@itemGrourp3.Key.MaChV" hidden />
+                                        <input type="text" name="MaCT" value="@itemGrourp2.Key.MaCT" hidden />
+                                        <input type="text" name="TieuDeCV" value="@item.TieuDeCV" hidden />
+                                        <input type="text" name="KhaNang" value="@item.KhaNang" hidden />
+                                    </div>
+                                }
+                            </ul>
+                        }
+
+                        @if (Session["TaiKhoan"] != null)
+                        {
+                            ThongtinTaiKhoan Tttkh = (ThongtinTaiKhoan)Session["TaiKhoan"];
+                            if (Tttkh.MaLoaiTK == 1)
+                            {
+                                <a href="@Url.Action("ChinhSuaTK", "Home", new { @MaTTTK = Tttkh.MaTTTK })" class="add-cart item_add">Chỉnh sửa thông tin</a>
+                            }
+                            if (Tttkh.MaLoaiTK == 2)
+                            {
+                                if (item.DaXem == false)
+                                {
+                                    <input type="text" name="DaXem" value="True" hidden />
+                                    <input class="add-cart item_add color" type="submit" value="Chấp nhận phỏng vấn" />
+                                }
+                                else
+                                {
+                                    <input type="text" name="DaXem" value="False" hidden />
+                                    <input class="add-cart item_add color" type="submit" value="Hủy hỏng vấn" />
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
+}
+<style>
+    .color {
+        margin-left: 20px;
+        margin-top: 20px;
+        background-color: orangered;
+    }
+</style>
+

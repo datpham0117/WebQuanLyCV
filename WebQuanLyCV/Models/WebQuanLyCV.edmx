@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WebQuanLyCVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ChucVu">
+          <Key>
+            <PropertyRef Name="MaChV" />
+          </Key>
+          <Property Name="MaChV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChucVuTuyenDung" Type="nvarchar" MaxLength="255" />
+          <Property Name="MaCT" Type="int" />
+          <Property Name="MucLuong" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="MoTaCongViec" Type="nvarchar(max)" />
+          <Property Name="YeuCau" Type="nvarchar(max)" />
+          <Property Name="PhucLoi" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CongTy">
+          <Key>
+            <PropertyRef Name="MaCT" />
+          </Key>
+          <Property Name="MaCT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenCT" Type="nvarchar" MaxLength="255" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="SDT" Type="nvarchar" MaxLength="12" />
+          <Property Name="EmailCT" Type="nvarchar" MaxLength="100" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="CV">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaTTTK" Type="int" />
+          <Property Name="MaChV" Type="int" />
+          <Property Name="MaCT" Type="int" />
+          <Property Name="TieuDeCV" Type="nvarchar" MaxLength="225" />
+          <Property Name="DaXem" Type="bit" />
+          <Property Name="KhaNang" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LoaiTaiKhoan">
+          <Key>
+            <PropertyRef Name="MaLoaiTK" />
+          </Key>
+          <Property Name="MaLoaiTK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenLoaiTK" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ThongtinTaiKhoan">
+          <Key>
+            <PropertyRef Name="MaTTTK" />
+          </Key>
+          <Property Name="MaTTTK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="255" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="NgaySinh" Type="date" />
+          <Property Name="TrinhDoHocVan" Type="nvarchar" MaxLength="255" />
+          <Property Name="GioiThieuBanThan" Type="nvarchar(max)" />
+          <Property Name="MaLoaiTK" Type="int" />
+          <Property Name="MaCT" Type="int" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="50" />
+          <Property Name="CauHoiAN" Type="nvarchar(max)" />
+          <Property Name="AnhDD" Type="nvarchar(max)" />
+          <Property Name="SDTCN" Type="nvarchar" MaxLength="12" />
+        </EntityType>
+        <Association Name="FK_ChucVu_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="ChucVu">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_ChucVu">
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChucVu">
+              <PropertyRef Name="MaChV" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaChV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_ThongTinTaiKhoan">
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaTTTK" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaTTTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThongtinTaiKhoan_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThongtinTaiKhoan_LoaiTaikhoan">
+          <End Role="LoaiTaiKhoan" Type="Self.LoaiTaiKhoan" Multiplicity="0..1" />
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiTaiKhoan">
+              <PropertyRef Name="MaLoaiTK" />
+            </Principal>
+            <Dependent Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaLoaiTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebQuanLyCVModelStoreContainer">
+          <EntitySet Name="ChucVu" EntityType="Self.ChucVu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CongTy" EntityType="Self.CongTy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CV" EntityType="Self.CV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoaiTaiKhoan" EntityType="Self.LoaiTaiKhoan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThongtinTaiKhoan" EntityType="Self.ThongtinTaiKhoan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ChucVu_CongTy" Association="Self.FK_ChucVu_CongTy">
+            <End Role="CongTy" EntitySet="CongTy" />
+            <End Role="ChucVu" EntitySet="ChucVu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_ChucVu" Association="Self.FK_CV_ChucVu">
+            <End Role="ChucVu" EntitySet="ChucVu" />
+            <End Role="CV" EntitySet="CV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_CongTy" Association="Self.FK_CV_CongTy">
+            <End Role="CongTy" EntitySet="CongTy" />
+            <End Role="CV" EntitySet="CV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_ThongTinTaiKhoan" Association="Self.FK_CV_ThongTinTaiKhoan">
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoan" />
+            <End Role="CV" EntitySet="CV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThongtinTaiKhoan_CongTy" Association="Self.FK_ThongtinTaiKhoan_CongTy">
+            <End Role="CongTy" EntitySet="CongTy" />
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThongtinTaiKhoan_LoaiTaikhoan" Association="Self.FK_ThongtinTaiKhoan_LoaiTaikhoan">
+            <End Role="LoaiTaiKhoan" EntitySet="LoaiTaiKhoan" />
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoan" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WebQuanLyCVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ChucVu">
+          <Key>
+            <PropertyRef Name="MaChV" />
+          </Key>
+          <Property Name="MaChV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChucVuTuyenDung" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MaCT" Type="Int32" />
+          <NavigationProperty Name="CongTy" Relationship="Self.FK_ChucVu_CongTy" FromRole="ChucVu" ToRole="CongTy" />
+          <NavigationProperty Name="CVs" Relationship="Self.FK_CV_ChucVu" FromRole="ChucVu" ToRole="CV" />
+          <Property Name="MucLuong" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MoTaCongViec" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="YeuCau" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhucLoi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CongTy">
+          <Key>
+            <PropertyRef Name="MaCT" />
+          </Key>
+          <Property Name="MaCT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ChucVus" Relationship="Self.FK_ChucVu_CongTy" FromRole="CongTy" ToRole="ChucVu" />
+          <NavigationProperty Name="CVs" Relationship="Self.FK_CV_CongTy" FromRole="CongTy" ToRole="CV" />
+          <NavigationProperty Name="ThongtinTaiKhoans" Relationship="Self.FK_ThongtinTaiKhoan_CongTy" FromRole="CongTy" ToRole="ThongtinTaiKhoan" />
+          <Property Name="EmailCT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CV">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaTTTK" Type="Int32" />
+          <Property Name="MaChV" Type="Int32" />
+          <Property Name="MaCT" Type="Int32" />
+          <NavigationProperty Name="ChucVu" Relationship="Self.FK_CV_ChucVu" FromRole="CV" ToRole="ChucVu" />
+          <NavigationProperty Name="CongTy" Relationship="Self.FK_CV_CongTy" FromRole="CV" ToRole="CongTy" />
+          <NavigationProperty Name="ThongtinTaiKhoan" Relationship="Self.FK_CV_ThongTinTaiKhoan" FromRole="CV" ToRole="ThongtinTaiKhoan" />
+          <Property Name="TieuDeCV" Type="String" MaxLength="225" FixedLength="false" Unicode="true" />
+          <Property Name="DaXem" Type="Boolean" />
+          <Property Name="KhaNang" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LoaiTaiKhoan">
+          <Key>
+            <PropertyRef Name="MaLoaiTK" />
+          </Key>
+          <Property Name="MaLoaiTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenLoaiTK" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ThongtinTaiKhoans" Relationship="Self.FK_ThongtinTaiKhoan_LoaiTaikhoan" FromRole="LoaiTaiKhoan" ToRole="ThongtinTaiKhoan" />
+        </EntityType>
+        <EntityType Name="ThongtinTaiKhoan">
+          <Key>
+            <PropertyRef Name="MaTTTK" />
+          </Key>
+          <Property Name="MaTTTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="0" />
+          <Property Name="TrinhDoHocVan" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GioiThieuBanThan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaLoaiTK" Type="Int32" />
+          <Property Name="MaCT" Type="Int32" />
+          <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CauHoiAN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CongTy" Relationship="Self.FK_ThongtinTaiKhoan_CongTy" FromRole="ThongtinTaiKhoan" ToRole="CongTy" />
+          <NavigationProperty Name="CVs" Relationship="Self.FK_CV_ThongTinTaiKhoan" FromRole="ThongtinTaiKhoan" ToRole="CV" />
+          <NavigationProperty Name="LoaiTaiKhoan" Relationship="Self.FK_ThongtinTaiKhoan_LoaiTaikhoan" FromRole="ThongtinTaiKhoan" ToRole="LoaiTaiKhoan" />
+          <Property Name="AnhDD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDTCN" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ChucVu_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="ChucVu">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_ChucVu">
+          <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChucVu">
+              <PropertyRef Name="MaChV" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaChV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThongtinTaiKhoan_CongTy">
+          <End Role="CongTy" Type="Self.CongTy" Multiplicity="0..1" />
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CongTy">
+              <PropertyRef Name="MaCT" />
+            </Principal>
+            <Dependent Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaCT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CV_ThongTinTaiKhoan">
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="0..1" />
+          <End Role="CV" Type="Self.CV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaTTTK" />
+            </Principal>
+            <Dependent Role="CV">
+              <PropertyRef Name="MaTTTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThongtinTaiKhoan_LoaiTaikhoan">
+          <End Role="LoaiTaiKhoan" Type="Self.LoaiTaiKhoan" Multiplicity="0..1" />
+          <End Role="ThongtinTaiKhoan" Type="Self.ThongtinTaiKhoan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoaiTaiKhoan">
+              <PropertyRef Name="MaLoaiTK" />
+            </Principal>
+            <Dependent Role="ThongtinTaiKhoan">
+              <PropertyRef Name="MaLoaiTK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebQuanLyCVEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ChucVus" EntityType="Self.ChucVu" />
+          <EntitySet Name="CongTies" EntityType="Self.CongTy" />
+          <EntitySet Name="CVs" EntityType="Self.CV" />
+          <EntitySet Name="LoaiTaiKhoans" EntityType="Self.LoaiTaiKhoan" />
+          <EntitySet Name="ThongtinTaiKhoans" EntityType="Self.ThongtinTaiKhoan" />
+          <AssociationSet Name="FK_ChucVu_CongTy" Association="Self.FK_ChucVu_CongTy">
+            <End Role="CongTy" EntitySet="CongTies" />
+            <End Role="ChucVu" EntitySet="ChucVus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_ChucVu" Association="Self.FK_CV_ChucVu">
+            <End Role="ChucVu" EntitySet="ChucVus" />
+            <End Role="CV" EntitySet="CVs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_CongTy" Association="Self.FK_CV_CongTy">
+            <End Role="CongTy" EntitySet="CongTies" />
+            <End Role="CV" EntitySet="CVs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThongtinTaiKhoan_CongTy" Association="Self.FK_ThongtinTaiKhoan_CongTy">
+            <End Role="CongTy" EntitySet="CongTies" />
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CV_ThongTinTaiKhoan" Association="Self.FK_CV_ThongTinTaiKhoan">
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoans" />
+            <End Role="CV" EntitySet="CVs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThongtinTaiKhoan_LoaiTaikhoan" Association="Self.FK_ThongtinTaiKhoan_LoaiTaikhoan">
+            <End Role="LoaiTaiKhoan" EntitySet="LoaiTaiKhoans" />
+            <End Role="ThongtinTaiKhoan" EntitySet="ThongtinTaiKhoans" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WebQuanLyCVModelStoreContainer" CdmEntityContainer="WebQuanLyCVEntities1">
+          <EntitySetMapping Name="ChucVus">
+            <EntityTypeMapping TypeName="WebQuanLyCVModel.ChucVu">
+              <MappingFragment StoreEntitySet="ChucVu">
+                <ScalarProperty Name="PhucLoi" ColumnName="PhucLoi" />
+                <ScalarProperty Name="YeuCau" ColumnName="YeuCau" />
+                <ScalarProperty Name="MoTaCongViec" ColumnName="MoTaCongViec" />
+                <ScalarProperty Name="MucLuong" ColumnName="MucLuong" />
+                <ScalarProperty Name="MaChV" ColumnName="MaChV" />
+                <ScalarProperty Name="ChucVuTuyenDung" ColumnName="ChucVuTuyenDung" />
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CongTies">
+            <EntityTypeMapping TypeName="WebQuanLyCVModel.CongTy">
+              <MappingFragment StoreEntitySet="CongTy">
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="EmailCT" ColumnName="EmailCT" />
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+                <ScalarProperty Name="TenCT" ColumnName="TenCT" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CVs">
+            <EntityTypeMapping TypeName="WebQuanLyCVModel.CV">
+              <MappingFragment StoreEntitySet="CV">
+                <ScalarProperty Name="KhaNang" ColumnName="KhaNang" />
+                <ScalarProperty Name="DaXem" ColumnName="DaXem" />
+                <ScalarProperty Name="TieuDeCV" ColumnName="TieuDeCV" />
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="MaTTTK" ColumnName="MaTTTK" />
+                <ScalarProperty Name="MaChV" ColumnName="MaChV" />
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoaiTaiKhoans">
+            <EntityTypeMapping TypeName="WebQuanLyCVModel.LoaiTaiKhoan">
+              <MappingFragment StoreEntitySet="LoaiTaiKhoan">
+                <ScalarProperty Name="MaLoaiTK" ColumnName="MaLoaiTK" />
+                <ScalarProperty Name="TenLoaiTK" ColumnName="TenLoaiTK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThongtinTaiKhoans">
+            <EntityTypeMapping TypeName="WebQuanLyCVModel.ThongtinTaiKhoan">
+              <MappingFragment StoreEntitySet="ThongtinTaiKhoan">
+                <ScalarProperty Name="SDTCN" ColumnName="SDTCN" />
+                <ScalarProperty Name="AnhDD" ColumnName="AnhDD" />
+                <ScalarProperty Name="MaTTTK" ColumnName="MaTTTK" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="TrinhDoHocVan" ColumnName="TrinhDoHocVan" />
+                <ScalarProperty Name="GioiThieuBanThan" ColumnName="GioiThieuBanThan" />
+                <ScalarProperty Name="MaLoaiTK" ColumnName="MaLoaiTK" />
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="CauHoiAN" ColumnName="CauHoiAN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
